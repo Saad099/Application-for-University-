@@ -104,6 +104,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(web);
             }
         });
+        findViewById(R.id.notices).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List.Ref = "Notices";
+                startActivity(new Intent(getApplicationContext(),List.class));
+            }
+        });
+        findViewById(R.id.events).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List.Ref = "Events";
+                startActivity(new Intent(getApplicationContext(),List.class));
+            }
+        });
+
 
 
 
