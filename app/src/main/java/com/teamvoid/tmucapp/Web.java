@@ -56,5 +56,23 @@ public class Web extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-    }
-}
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.teal_200, this.getTheme()));
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.teal_200));
+        }
+
+        HomeBtn = findViewById(R.id.homeBtn);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
+
+        class MyWebChromeClient extends WebChromeClient {
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(newProgress);
+            }
+        }
+
+    }}
