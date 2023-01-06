@@ -30,5 +30,57 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
+
+        Intent web = new Intent(getApplicationContext(), Web.class);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        findViewById(R.id.timetable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                InputStream inputStream = getResources().openRawResource(R.raw.timetable);
+                try {
+                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "timetable.pdf");
+                    try (OutputStream output = new FileOutputStream(file)) {
+                        byte[] buffer = new byte[4 * 1024]; // or other buffer size
+                        int read;
+
+                        while ((read = inputStream.read(buffer)) != -1) {
+                            output.write(buffer, 0, read);
+                        }
+                        output.flush();
+
+                        Uri path = Uri.fromFile(file);
+                        Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+                        pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        pdfOpenintent.setDataAndType(path, "application/pdf");
+                        try {
+                            startActivity(pdfOpenintent);
+                        }
+                        catch (ActivityNotFoundException e) {
+                            Toast.makeText(getApplicationContext(), "Allow Permissions in Settings", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Allow Permissions in Settings", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } finally {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Allow Permissions in Settings", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        });
+
+
+
     }
 }
