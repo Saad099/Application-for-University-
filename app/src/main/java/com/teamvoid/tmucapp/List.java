@@ -56,7 +56,27 @@ public class List extends AppCompatActivity {
                                     eventDetails.add(value.getValue().toString());
                                 }
                             }
+                            View listView = inflater.inflate(R.layout.list_item, list, false);
+                            TextView date = listView.findViewById(R.id.date);
+                            TextView month = listView.findViewById(R.id.month);
+                            TextView heading = listView.findViewById(R.id.eHeading);
+                            TextView details = listView.findViewById(R.id.details);
 
+                            date.setText(eventDetails.get(0));
+                            month.setText(eventDetails.get(3));
+                            heading.setText(eventDetails.get(2));
+                            details.setText(eventDetails.get(1));
+                            list.addView(listView);
+                        }
+                    }
+                }
+                loading.dismiss();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }
