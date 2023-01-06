@@ -118,6 +118,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),List.class));
             }
         });
+        findViewById(R.id.facebook).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/tmuc.Islamabad/"));
+                startActivity(browserIntent);
+            }
+        });
+        findViewById(R.id.twitter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/tmuc_Pakistan"));
+                startActivity(browserIntent);
+            }
+        });
+
+        findViewById(R.id.youtube).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/c/TheMillenniumUniversalCollegeTMUC"));
+                startActivity(browserIntent);
+            }
+        });
+
+        findViewById(R.id.linkedin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "https://www.linkedin.com/company/tmuc/"));
+                startActivity(browserIntent);
+            }
+        });
+
+        findViewById(R.id.instagram).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "https://www.instagram.com/tmucpakistan/"));
+                startActivity(browserIntent);
+            }
+        });
+
 
 
 
