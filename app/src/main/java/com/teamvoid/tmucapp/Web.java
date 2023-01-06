@@ -74,5 +74,27 @@ public class Web extends AppCompatActivity {
                 progressBar.setProgress(newProgress);
             }
         }
+        webView = findViewById(R.id.web);
+        webView.setWebChromeClient( new MyWebChromeClient());
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.loadUrl(url);
+        String userAgent = webView.getSettings().getUserAgentString();
+        if(desktop){
+            try {
+                String androidString = webView.getSettings().getUserAgentString().
+                        substring(userAgent.indexOf("("),userAgent.indexOf(")")+ 1);
 
-    }}
+                userAgent = webView.getSettings().getUserAgentString().replace(androidString,"X11; Linux x86_64");
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }}}
+
