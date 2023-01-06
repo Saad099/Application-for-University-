@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "96921904296",
+    "project_id": "tmuc-app",
+    "storage_bucket": "tmuc-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96921904296:android:f569a2c6f8a6fbef8f0e9d",
+        "android_client_info": {
+          "package_name": "com.teamvoid.tmucapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96921904296-sier87ef6spo4kkhk7g08km4o7soqa5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArUN5gFtd2eBexiNgMNis8YnWHwPrfsG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96921904296-sier87ef6spo4kkhk7g08km4o7soqa5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
