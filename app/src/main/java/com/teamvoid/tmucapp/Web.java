@@ -68,12 +68,14 @@ public class Web extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
 
+
         class MyWebChromeClient extends WebChromeClient {
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setVisibility(View.VISIBLE);
                 progressBar.setProgress(newProgress);
             }
         }
+
         webView = findViewById(R.id.web);
         webView.setWebChromeClient( new MyWebChromeClient());
         webView.getSettings().setDisplayZoomControls(false);
@@ -112,6 +114,7 @@ public class Web extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
             }
 
+
             // For Lollipop 5.0+ Devices
             public boolean onShowFileChooser(WebView mWebView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams)
             {
@@ -136,6 +139,7 @@ public class Web extends AppCompatActivity {
                 }
                 return true;
             }
+
             //For Android 4.1 only
             protected void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture)
             {
@@ -155,12 +159,15 @@ public class Web extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
             }
         });
+
+
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
         //handle downloading
         webView.setDownloadListener(new DownloadListener() {
             @Override
@@ -183,6 +190,7 @@ public class Web extends AppCompatActivity {
                 }
             }
         });
+
         HomeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -191,6 +199,7 @@ public class Web extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed(){
         if(HomePressed) {
@@ -208,9 +217,91 @@ public class Web extends AppCompatActivity {
 
 
 
+    //downloadDialog Method
+    public void downloadDialog(final String url, final String userAgent, String contentDisposition, String mimetype) {
+        //getting filename from url.
+        final String filename;
+
+        if(contentDisposition.split("filename=").length >= 2)
+            filename = contentDisposition.split("filename=")[1].split(";")[0].replaceAll("^\"|\"$", "");
+        else
+            filename = URLUtil.guessFileName(url, contentDisposition, mimetype).replaceAll("^\"|\"$", "");
+        //alertdialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //title of alertdialog
+        builder.setTitle("Download & Save: ");
+        //message of alertdialog
+        builder.setMessage("File: "+ filename);
+        //if Yes button clicks.
+
+        builder.setPositiveButton("Download", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //DownloadManager.Request created with url.
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                //cookie
+                String cookie = CookieManager.getInstance().getCookie(url);
+                //Add cookie and User-Agent to request
+                request.addRequestHeader("Cookie", cookie);
+                request.addRequestHeader("User-Agent", userAgent);
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+                request.setAllowedOverMetered(true);
+                request.setVisibleInDownloadsUi(true);
+                //file scanned by MediaScannar
+                request.allowScanningByMediaScanner();
+                //Download is visible and its progress, after completion too.
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setTitle(filename).setDescription("FDH APP");
+                //DownloadManager created
+                DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                //Saving files in Download folder
+                File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/FDH Downloads");
+                if (!f.exists()) {
+                    f.mkdirs();
+                }
+                File file = new File(f.getAbsoluteFile()+"/"+filename);
+                request.setDestinationUri(Uri.fromFile(file));
+                //download enqued
+                long id = downloadManager.enqueue(request);
+                Toast.makeText(Web.this,"Starting Download", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //cancel the dialog if Cancel clicks
+                dialog.cancel();
+            }
+        });
+        //alertdialog shows.
+        builder.show();
+    }
 
 
-
-
-
-
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            if (requestCode == REQUEST_SELECT_FILE)
+            {
+                if (uploadMessage == null)
+                    return;
+                uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+                uploadMessage = null;
+            }
+        }
+        else if (requestCode == FILECHOOSER_RESULTCODE)
+        {
+            if (null == mUploadMessage)
+                return;
+            // Use MainActivity.RESULT_OK if you're implementing WebView inside Fragment
+            // Use RESULT_OK only if you're implementing WebView inside an Activity
+            Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+        }
+    }
+}
