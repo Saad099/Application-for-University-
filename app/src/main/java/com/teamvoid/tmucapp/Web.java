@@ -155,6 +155,59 @@ public class Web extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(i, "File Chooser"), FILECHOOSER_RESULTCODE);
             }
         });
+        webView.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+        //handle downloading
+        webView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(final String url, final String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                //Checking runtime permission for devices above Marshmallow.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        Log.v("TAG", "Permission is granted");
+                        downloadDialog(url, userAgent, contentDisposition, mimetype);
+                    } else {
+                        Log.v("TAG", "Permission is revoked");
+                        //requesting permissions.
+                        ActivityCompat.requestPermissions(Web.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    }
+                } else {
+                    //Code for devices below API 23 or Marshmallow
+                    Log.v("TAG", "Permission is granted");
+                    downloadDialog(url, userAgent, contentDisposition, mimetype);
+                }
+            }
+        });
+        HomeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                HomePressed = true;
+                onBackPressed();
+            }
+        });
+    }
+    @Override
+    public void onBackPressed(){
+        if(HomePressed) {
+            super.onBackPressed();
+            HomePressed = false;
+        }
+        else if(webView.canGoBack()){
+            webView.goBack();
+            progressBar.setVisibility(View.GONE);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+
+
 
 
 
