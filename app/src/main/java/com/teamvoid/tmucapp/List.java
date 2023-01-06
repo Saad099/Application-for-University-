@@ -26,5 +26,20 @@ public class List extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        getSupportActionBar().hide();
+
+        ProgressDialog loading = new ProgressDialog(List.this);
+        loading.setCancelable(false);
+        loading.setMessage("Please Wait.");
+        loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(Ref);
+
+        TextView Heading = findViewById(R.id.Heading);
+        LinearLayout list = findViewById(R.id.list);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        Heading.setText(Ref);
     }
 }
