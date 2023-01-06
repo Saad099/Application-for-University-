@@ -96,5 +96,21 @@ public class Web extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        }}}
+        }
+        webView.getSettings().setUserAgentString(userAgent);
+        webView.reload();
+
+        webView.setWebChromeClient(new MyWebChromeClient(){
+            // For 3.0+ Devices (Start)
+            // onActivityResult attached before constructor
+            protected void openFileChooser(ValueCallback uploadMsg, String acceptType)
+            {
+                mUploadMessage = uploadMsg;
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("*/*");
+                startActivityForResult(Intent.createChooser(i, "File Browser"), FILECHOOSER_RESULTCODE);
+            }
+
+
 
