@@ -37,6 +37,17 @@ import java.io.File;
 
 public class Web extends AppCompatActivity {
 
+    WebView webView;
+    static String url = "";
+    static boolean desktop = false;
+    static boolean HomePressed = false;
+    Button HomeBtn;
+    ProgressBar progressBar;
+
+    private ValueCallback<Uri> mUploadMessage;
+    public ValueCallback<Uri[]> uploadMessage;
+    public static final int REQUEST_SELECT_FILE = 100;
+    private final static int FILECHOOSER_RESULTCODE = 1;
 
 
 
@@ -45,6 +56,5 @@ public class Web extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-
     }
 }
