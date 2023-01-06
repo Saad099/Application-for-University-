@@ -79,6 +79,33 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        findViewById(R.id.setting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(
+                        new Intent(
+                                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", getPackageName(), null)
+                        )
+                );
+            }
+        });
+        findViewById(R.id.news).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Web.url = "https://tmuc.edu.pk/college-life/#news-event";
+                startActivity(web);
+            }
+        });
+        findViewById(R.id.lms).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Web.url = "https://vle.tmuc.edu.pk/login/index.php";
+                startActivity(web);
+            }
+        });
+
+
 
 
 
