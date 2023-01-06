@@ -41,5 +41,22 @@ public class List extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         Heading.setText(Ref);
+
+        loading.show();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.removeAllViews();
+                if (snapshot.exists()){
+                    for (DataSnapshot event: snapshot.getChildren()){
+                        if (event.exists()){
+                            java.util.List<String> eventDetails = new ArrayList<>();
+                            for (DataSnapshot value: event.getChildren()){
+                                if (value.exists()){
+                                    eventDetails.add(value.getValue().toString());
+                                }
+                            }
+
+
     }
 }
